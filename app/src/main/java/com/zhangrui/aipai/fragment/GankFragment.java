@@ -29,7 +29,7 @@ public class GankFragment extends BaseFragment {
     TabLayout mTab;
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
-    private final String[] TITLES = new String[]{"每日", "福利",
+    private final String[] TITLES = new String[]{"福利",
             "iOS", "Android", "休息视频", "拓展资源", "前端"};
 
     @Override
@@ -48,16 +48,16 @@ public class GankFragment extends BaseFragment {
             Bundle bundle = new Bundle();
             bundle.putString("type", TITLES[i]);
             bundle.putString("title", TITLES[i]);
-
-            if (TITLES[i].equals("每日")) {
-                GankImgFragment imgFragment = new GankImgFragment();
-                imgFragment.setArguments(bundle);
-                mFragments.add(imgFragment);
-            }else {
+//
+//            if (TITLES[i].equals("每日")) {
+//                GankDayFragment imgFragment = new GankDayFragment();
+//                imgFragment.setArguments(bundle);
+//                mFragments.add(imgFragment);
+//            }else {
                 GankTabFragment tabFragment = new GankTabFragment();
                 tabFragment.setArguments(bundle);
                 mFragments.add(tabFragment);
-            }
+           // }
         }
         FragmentAdapter adapter =
                 new FragmentAdapter(getChildFragmentManager(), mFragments, TITLES);

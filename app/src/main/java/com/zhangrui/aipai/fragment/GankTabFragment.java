@@ -1,5 +1,6 @@
 package com.zhangrui.aipai.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.zhangrui.aipai.R;
+import com.zhangrui.aipai.activity.WebActivity;
 import com.zhangrui.aipai.adapter.GankDataAdapter;
 import com.zhangrui.aipai.base.BaseMvpFragment;
 import com.zhangrui.aipai.mvp.model.Gank;
@@ -75,6 +77,17 @@ public class GankTabFragment extends BaseMvpFragment<GankPresenter> implements G
                     }
 
                 });
+            }
+        });
+        mRecyclerview.addOnItemTouchListener(new OnItemClickListener( ){
+
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if(!type.equals("福利")){
+                    Intent intent = new Intent(getActivity(), WebActivity.class);
+                    intent.putExtra("url", mGankDataList.get(position).getUrl());
+                    getActivity().startActivity(intent);
+                }
             }
         });
         mRecyclerview.setAdapter(mAdapter);
