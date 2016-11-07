@@ -45,11 +45,11 @@
             app:itemTextColor="@android:color/black"
             app:menu="@menu/main_drawer"/>
     </android.support.v4.widget.DrawerLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="20dp"-->
 
-        android:layout_gravity="end|bottom"/>
+        <!--android:layout_gravity="end|bottom"/>-->
 </android.support.design.widget.CoordinatorLayout>

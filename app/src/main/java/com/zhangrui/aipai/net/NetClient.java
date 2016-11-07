@@ -25,9 +25,11 @@ public class NetClient {
 
     private volatile static NetClient mInstance = new NetClient();
 
-    private  Retrofit sAiPaiRetrofit;
+    private static Retrofit sAiPaiRetrofit;
+    private static Retrofit sGankRetrofit;
 
-    private  OkHttpClient sOkHttpClient;
+    private OkHttpClient sOkHttpClient;
+
     public static NetClient getInstance() {
         if (mInstance == null) {
             synchronized (NetClient.class) {
@@ -42,26 +44,50 @@ public class NetClient {
     private NetClient() {
     }
 
-    public  Retrofit getVideoRetrofit(){
+    /**
+     * 美拍
+     *
+     * @return
+     */
+    public Retrofit getVideoRetrofit() {
 
-        if(sAiPaiRetrofit==null){
-            sAiPaiRetrofit=new Retrofit.Builder()
-                            .baseUrl(Api.AiPaiApi.AIPAI_BASE_URL)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                            .client(getOkHttpClient())
-                            .build();
+        if (sAiPaiRetrofit == null) {
+            sAiPaiRetrofit = new Retrofit.Builder()
+                    .baseUrl(Api.AiPaiApi.AIPAI_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .client(getOkHttpClient())
+                    .build();
         }
         return sAiPaiRetrofit;
 
     }
 
     /**
-     * 初始化okhttp
+     * Gank
+     *
      * @return
      */
-    private  OkHttpClient getOkHttpClient(){
-        if (sOkHttpClient == null){
+    public Retrofit getGankRetrofit() {
+
+        if (sGankRetrofit == null) {
+            sGankRetrofit = new Retrofit.Builder()
+                    .baseUrl(Api.GankApi.GANK_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .client(getOkHttpClient())
+                    .build();
+        }
+        return sGankRetrofit;
+    }
+
+    /**
+     * 初始化okhttp
+     *
+     * @return
+     */
+    private OkHttpClient getOkHttpClient() {
+        if (sOkHttpClient == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
             //cache url
@@ -75,7 +101,7 @@ public class NetClient {
         return sOkHttpClient;
     }
 
-   private static Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
+    private static Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             CacheControl.Builder cacheBuilder = new CacheControl.Builder();
@@ -97,7 +123,7 @@ public class NetClient {
                         .header("Cache-Control", "public ,max-age=" + maxAge)
                         .build();
             } else {
-                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
+                int maxStale = 60 * 60 * 24 * 28;
                 return originalResponse.newBuilder()
                         .removeHeader("Pragma")
                         .header("Cache-Control", "public, only-if-xcached, max-stale=" + maxStale)

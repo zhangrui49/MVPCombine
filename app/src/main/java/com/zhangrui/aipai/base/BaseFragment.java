@@ -2,6 +2,7 @@ package com.zhangrui.aipai.base;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public Activity mActivity;
     public View mRootView;
     public ProgressDialog progressDialog;
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -69,5 +69,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public void showError(CharSequence msg) {
         dissmissProgress();
         Snackbar.make(mRootView,msg,Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void startActivity(Class target) {
+        startActivity(new Intent(getActivity(), target));
     }
 }

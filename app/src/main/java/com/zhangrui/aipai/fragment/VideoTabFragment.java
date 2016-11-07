@@ -1,6 +1,7 @@
 package com.zhangrui.aipai.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.zhangrui.aipai.R;
+import com.zhangrui.aipai.activity.WebActivity;
+import com.zhangrui.aipai.adapter.VideoTabAdapter;
 import com.zhangrui.aipai.base.BaseMvpFragment;
 import com.zhangrui.aipai.mvp.model.Video;
 import com.zhangrui.aipai.mvp.presenter.VideoPresenter;
@@ -52,14 +56,17 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
         index = getArguments().getInt("index", 0);
         mVideoList = new ArrayList<>();
         mAdapter = new VideoTabAdapter(mVideoList);
-        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int i) {
+        mRecyclerview.addOnItemTouchListener(new OnItemClickListener( ){
 
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("url", mVideoList.get(position).getUrl());
+                getActivity().startActivity(intent);
             }
         });
         mAdapter.openLoadAnimation();
-        mAdapter.openLoadMore(PAGE_SIZE, true);
+        mAdapter.openLoadMore(PAGE_SIZE);
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -75,6 +82,8 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
         });
         mRecyclerview.setAdapter(mAdapter);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        mRecyclerview.addItemDecoration(new RecyclerViewDivider(
+//                getActivity(), LinearLayoutManager.VERTICAL));
         getVideoList("");
     }
 
@@ -85,8 +94,8 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
 
     @Override
     public void updateVideoList(List<Video> videos) {
-        mVideoList.addAll(videos);
-        mAdapter.notifyDataChangedAfterLoadMore(videos, page>1);
+       // mVideoList.addAll(videos);
+        mAdapter.addData(videos);
     }
 
     public void getVideoList(String max_id) {

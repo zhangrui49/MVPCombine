@@ -7,6 +7,7 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.zhangrui.aipai.R;
 
@@ -20,7 +21,6 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
     public Activity mActivity;
     public Fragment mFragment;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,4 +55,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public abstract void initView();
+
+    public Toolbar setTitle(String title) {
+        Toolbar toolbar = (Toolbar) mActivity.findViewById(R.id.toolbar);
+        toolbar.setTitle(title);
+        return toolbar;
+    }
 }

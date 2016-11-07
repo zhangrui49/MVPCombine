@@ -1,4 +1,4 @@
-package com.zhangrui.aipai.fragment;
+package com.zhangrui.aipai.adapter;
 
 import android.widget.ImageView;
 
