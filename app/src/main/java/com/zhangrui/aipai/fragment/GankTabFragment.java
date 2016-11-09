@@ -45,7 +45,7 @@ public class GankTabFragment extends BaseMvpFragment<GankPresenter> implements G
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (mRootView == null) {
-            mRootView = inflater.inflate(R.layout.fragment_video_tab, container, false);
+            mRootView = inflater.inflate(R.layout.fragment_gank_tab, container, false);
         }
         return mRootView;
     }

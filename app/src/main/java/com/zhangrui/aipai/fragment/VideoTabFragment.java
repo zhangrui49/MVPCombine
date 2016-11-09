@@ -10,7 +10,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.zhangrui.aipai.R;
@@ -20,6 +24,7 @@ import com.zhangrui.aipai.base.BaseMvpFragment;
 import com.zhangrui.aipai.mvp.model.Video;
 import com.zhangrui.aipai.mvp.presenter.VideoPresenter;
 import com.zhangrui.aipai.mvp.view.VideoView;
+import com.zhangrui.aipai.widget.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,12 +41,22 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerview;
     private final String[] IDS = {"1", "13", "64", "16", "31", "19", "62", "63", "3", "59", "27", "5", "18", "6", "193"};
+    @Bind(R.id.header_image)
+    CircleImageView mHeaderImage;
+    @Bind(R.id.header_text)
+    TextView mHeaderText;
+    @Bind(R.id.header_action)
+    ImageView mHeaderAction;
+    @Bind(R.id.header_layout)
+    LinearLayout mHeaderLayout;
     private int page = 1;
     private final int PAGE_SIZE = 10;
     private List<Video> mVideoList;
     private VideoTabAdapter mAdapter;
     private int index;
-
+    private int mSuspensionHeight;
+    private LinearLayoutManager mLinearLayoutManager;
+    private int mCurrentPosition=0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,13 +71,46 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
         index = getArguments().getInt("index", 0);
         mVideoList = new ArrayList<>();
         mAdapter = new VideoTabAdapter(mVideoList);
-        mRecyclerview.addOnItemTouchListener(new OnItemClickListener( ){
+        mLinearLayoutManager=new LinearLayoutManager(getActivity());
+        mRecyclerview.setLayoutManager(mLinearLayoutManager);
+        mRecyclerview.addOnItemTouchListener(new OnItemClickListener() {
 
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 intent.putExtra("url", mVideoList.get(position).getUrl());
                 getActivity().startActivity(intent);
+            }
+        });
+
+        mRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                mSuspensionHeight = mHeaderLayout.getHeight();
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //找到列表第二个可见的View
+                View view = mLinearLayoutManager.findViewByPosition(mCurrentPosition + 1);
+                if (view == null) return;
+                //判断View的top值是否小于悬浮条的高度
+                if (view.getTop() <= mSuspensionHeight) {
+                    //被顶掉的效果
+                    mHeaderLayout.setY(-(mSuspensionHeight - view.getTop()));
+                } else {
+                    mHeaderLayout.setY(0);
+                }
+
+                //判断是否需要更新悬浮条
+                if (mCurrentPosition != mLinearLayoutManager.findFirstVisibleItemPosition()) {
+                    mCurrentPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+                    mHeaderLayout.setY(0);
+                    //更新悬浮条
+                    updateSuspensionBar();
+                }
             }
         });
         mAdapter.openLoadAnimation();
@@ -80,11 +128,18 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
                 });
             }
         });
+        ImageView refresh=new ImageView(getActivity());
+        refresh.setImageResource(R.drawable.refresh);
+        mAdapter.setEmptyView(refresh);
         mRecyclerview.setAdapter(mAdapter);
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        mRecyclerview.addItemDecoration(new RecyclerViewDivider(
 //                getActivity(), LinearLayoutManager.VERTICAL));
         getVideoList("");
+    }
+
+    private void updateSuspensionBar() {
+        Glide.with(getActivity()).load(mVideoList.get(mCurrentPosition).getAvatar()).into(mHeaderImage);
+        mHeaderText.setText(mVideoList.get(mCurrentPosition).getScreen_name());
     }
 
     @Override
@@ -94,8 +149,9 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
 
     @Override
     public void updateVideoList(List<Video> videos) {
-       // mVideoList.addAll(videos);
+        // mVideoList.addAll(videos);
         mAdapter.addData(videos);
+        updateSuspensionBar();
     }
 
     public void getVideoList(String max_id) {
@@ -111,4 +167,5 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
         }
         mPresenter.getVideoList(map);
     }
+
 }
