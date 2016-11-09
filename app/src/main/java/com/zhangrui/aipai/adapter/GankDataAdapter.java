@@ -33,7 +33,14 @@ public class GankDataAdapter extends BaseMultiItemQuickAdapter<GankData> {
                 helper.setText(R.id.who, item.getWho());
                 break;
             case GankData.IMG:
-                Glide.with(mContext).load(item.getUrl()).diskCacheStrategy(DiskCacheStrategy.ALL).into((ImageView) helper.getView(R.id.image));
+                Glide.with(mContext)
+                        .load(item.getUrl())
+                        .placeholder(R.drawable.loading)
+                        .error(R.drawable.error)
+                        .animate(R.anim.alpha_in)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .crossFade()
+                        .into((ImageView) helper.getView(R.id.image));
                 break;
         }
     }

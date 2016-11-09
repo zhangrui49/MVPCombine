@@ -95,6 +95,7 @@ public class NetClient {
             int cacheSize = 10 * 1024 * 1024; // 10 MiB
             Cache cache = new Cache(httpCacheDirectory, cacheSize);
             builder.cache(cache);
+            builder.connectTimeout(15,TimeUnit.SECONDS);
             builder.addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
             sOkHttpClient = builder.build();
         }

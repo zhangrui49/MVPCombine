@@ -17,6 +17,7 @@ public abstract class ApiCallBack<T> extends Subscriber<T> {
 
     @Override
     public void onError(Throwable e) {
+
         onFailure(e.getMessage());
     }
 
