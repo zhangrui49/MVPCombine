@@ -27,7 +27,7 @@ public class NetClient {
 
     private static Retrofit sAiPaiRetrofit;
     private static Retrofit sGankRetrofit;
-
+    private static Retrofit sZhihuRetrofit;
     private OkHttpClient sOkHttpClient;
 
     public static NetClient getInstance() {
@@ -79,6 +79,24 @@ public class NetClient {
                     .build();
         }
         return sGankRetrofit;
+    }
+
+    /**
+     * Gank
+     *
+     * @return
+     */
+    public Retrofit getZhihuRetrofit() {
+
+        if (sZhihuRetrofit == null) {
+            sZhihuRetrofit = new Retrofit.Builder()
+                    .baseUrl(Api.ZhihuApi.ZHIHU_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .client(getOkHttpClient())
+                    .build();
+        }
+        return sZhihuRetrofit;
     }
 
     /**

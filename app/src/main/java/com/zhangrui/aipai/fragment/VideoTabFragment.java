@@ -56,7 +56,8 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
     private int index;
     private int mSuspensionHeight;
     private LinearLayoutManager mLinearLayoutManager;
-    private int mCurrentPosition=0;
+    private int mCurrentPosition = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
         index = getArguments().getInt("index", 0);
         mVideoList = new ArrayList<>();
         mAdapter = new VideoTabAdapter(mVideoList);
-        mLinearLayoutManager=new LinearLayoutManager(getActivity());
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerview.setLayoutManager(mLinearLayoutManager);
         mRecyclerview.addOnItemTouchListener(new OnItemClickListener() {
 
@@ -79,6 +80,7 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 intent.putExtra("url", mVideoList.get(position).getUrl());
+                intent.putExtra("imgUrl", mVideoList.get(position).getAvatar());
                 getActivity().startActivity(intent);
             }
         });
@@ -113,6 +115,7 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
                 }
             }
         });
+
         mAdapter.openLoadAnimation();
         mAdapter.openLoadMore(PAGE_SIZE);
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -128,13 +131,22 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
                 });
             }
         });
-        ImageView refresh=new ImageView(getActivity());
+        ImageView refresh = new ImageView(getActivity());
         refresh.setImageResource(R.drawable.refresh);
         mAdapter.setEmptyView(refresh);
         mRecyclerview.setAdapter(mAdapter);
 //        mRecyclerview.addItemDecoration(new RecyclerViewDivider(
 //                getActivity(), LinearLayoutManager.VERTICAL));
         getVideoList("");
+        mHeaderAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mVideoList != null && mVideoList.size() > 0) {
+                    Video video = mVideoList.get(mCurrentPosition);
+                    showShare("汇聚", video.getCaption(), video.getAvatar(), video.getUrl());
+                }
+            }
+        });
     }
 
     private void updateSuspensionBar() {
@@ -146,6 +158,7 @@ public class VideoTabFragment extends BaseMvpFragment<VideoPresenter> implements
     public VideoPresenter setPresenter() {
         return new VideoPresenter(this);
     }
+
 
     @Override
     public void updateVideoList(List<Video> videos) {

@@ -16,7 +16,7 @@ public class GankPresenter extends BasePresenter<GankView> {
     private Api.GankApi mGankApi;
 
     public GankPresenter(GankView mvpView) {
-        attachView(mvpView);
+        super(mvpView);
         mGankApi = NetClient.getInstance().getGankRetrofit().create(Api.GankApi.class);
     }
 

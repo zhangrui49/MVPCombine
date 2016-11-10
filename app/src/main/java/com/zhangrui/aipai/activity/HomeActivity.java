@@ -12,9 +12,11 @@ import com.zhangrui.aipai.R;
 import com.zhangrui.aipai.base.BaseActivity;
 import com.zhangrui.aipai.fragment.GankFragment;
 import com.zhangrui.aipai.fragment.VideoFragment;
+import com.zhangrui.aipai.fragment.ZhihuFragment;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -87,17 +89,21 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.zhihu) {
-
+            toolbar.setTitle("知乎");
+            mFragment = new ZhihuFragment();
+            replaceFragment();
         } else if (id == R.id.gank) {
             mFragment = new GankFragment();
+            toolbar.setTitle("干货");
             replaceFragment();
         } else if (id == R.id.aipai) {
             mFragment = new VideoFragment();
+            toolbar.setTitle("美拍");
             replaceFragment();
         } else if (id == R.id.douban) {
 
         } else if (id == R.id.nav_share) {
-
+            showShare("汇聚", "我发现了一款不错的App,邀请你们下载", "", "");
         } else if (id == R.id.nav_send) {
 
         }

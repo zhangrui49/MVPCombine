@@ -12,4 +12,5 @@ public interface BaseView {
     void dissmissProgress();
 
     void showError(CharSequence msg);
+
 }

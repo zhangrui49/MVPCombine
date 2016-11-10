@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.ClientCertRequest;
 import android.webkit.ConsoleMessage;
 import android.webkit.HttpAuthHandler;
@@ -32,6 +33,7 @@ public class WebActivity extends BaseActivity {
     @Bind(R.id.webview)
     WebView mWebview;
     String url;
+    String imgUrl;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -60,6 +62,7 @@ public class WebActivity extends BaseActivity {
             }
         });
         url = getIntent().getStringExtra("url");
+        imgUrl = getIntent().getStringExtra("imgUrl");
         mWebview.loadUrl(url);
         mWebview.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -106,7 +109,7 @@ public class WebActivity extends BaseActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(url);
+                // view.loadUrl(url);
                 return true;
             }
 
@@ -208,10 +211,12 @@ public class WebActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-
-        super.onDestroy();
-        if (mWebview != null)
+        if (mWebview != null) {
+            ((ViewGroup) mWebview.getParent()).removeView(mWebview);
             mWebview.destroy();
+            mWebview = null;
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -231,6 +236,8 @@ public class WebActivity extends BaseActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_share) {
+            showShare("汇聚", mWebview.getTitle(), imgUrl, url);
         }
 
         return super.onOptionsItemSelected(item);

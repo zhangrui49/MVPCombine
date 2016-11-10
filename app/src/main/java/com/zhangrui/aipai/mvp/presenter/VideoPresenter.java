@@ -20,7 +20,7 @@ public class VideoPresenter extends BasePresenter<VideoView> {
     private Api.AiPaiApi mAiPaiApi;
 
     public VideoPresenter(VideoView videoView) {
-        attachView(videoView);
+        super(videoView);
         mAiPaiApi = NetClient.getInstance().getVideoRetrofit().create(Api.AiPaiApi.class);
     }
 

@@ -17,7 +17,6 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 
     private String[] mTitles;
 
-
     public FragmentAdapter(FragmentManager fm, List<Fragment> fragmentList, String[] mTitles) {
         super(fm);
         if (fragmentList == null) {

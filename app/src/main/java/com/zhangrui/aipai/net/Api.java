@@ -3,6 +3,8 @@ package com.zhangrui.aipai.net;
 import com.zhangrui.aipai.mvp.model.Gank;
 import com.zhangrui.aipai.mvp.model.GankDayData;
 import com.zhangrui.aipai.mvp.model.Video;
+import com.zhangrui.aipai.viewmodel.Story;
+import com.zhangrui.aipai.mvp.model.Zhihu;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +22,7 @@ import rx.Observable;
 public class Api {
 
     public interface AiPaiApi {
-        public String AIPAI_BASE_URL = "http://newapi.meipai.com/output/";
+          String AIPAI_BASE_URL = "http://newapi.meipai.com/output/";
 
         /**
          * 获取美拍视频列表
@@ -34,7 +36,7 @@ public class Api {
 
     public interface GankApi {
 
-        public String GANK_BASE_URL = "http://gank.io/api/";
+         String GANK_BASE_URL = "http://gank.io/api/";
 
         @GET("data/{type}/{pageSize}/{page}")
         Observable<Gank> getGankData(@Path("type") String type,@Path("pageSize") int pageSize, @Path("page") int page);
@@ -44,5 +46,19 @@ public class Api {
                                             @Path("day") int day);
     }
 
+    public interface ZhihuApi {
+
+         String ZHIHU_BASE_URL = "http://news-at.zhihu.com";
+
+        @GET("/api/4/news/latest")
+        Observable<Zhihu> getLastZhihuDaily();
+
+        @GET("/api/4/news/before/{date}")
+        Observable<Zhihu> getZhihuDaily(@Path("date") String date);
+
+        @GET("/api/4/news/{id}")
+        Observable<Story> getZhihuStory(@Path("id") String id);
+
+    }
 
 }

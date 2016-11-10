@@ -11,16 +11,16 @@ import rx.subscriptions.CompositeSubscription;
  * Created by zhangrui on 2016/11/3.
  */
 
-public class BasePresenter<V> {
+public abstract class BasePresenter<V> {
 
     public V mView;
 
     private CompositeSubscription mCompositeSubscription;
 
-    public void attachView(V mvpView) {
-        this.mView = mvpView;
-    }
 
+    public BasePresenter(V view) {
+        mView = view;
+    }
 
     public void detachView() {
         this.mView = null;
