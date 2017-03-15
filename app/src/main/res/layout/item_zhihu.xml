@@ -4,7 +4,6 @@
               android:layout_height="wrap_content"
               android:paddingBottom="@dimen/padding_normal"
               android:paddingTop="@dimen/padding_normal"
-              android:foreground="@color/colorPrimaryAlpha55"
               android:orientation="horizontal"
               android:stateListAnimator="@animator/raise"
               android:gravity="center_vertical"
@@ -18,7 +17,6 @@
         android:layout_marginLeft="@dimen/padding_normal"
         android:layout_marginTop="5dp"
         android:elevation="16dp"
-        android:foreground="@drawable/loading"
         android:stateListAnimator="@animator/raise"/>
 
     <TextView

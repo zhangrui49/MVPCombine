@@ -75,7 +75,6 @@ public class ZhihuFragment extends BaseMvpFragment<ZhihuPresenter> implements Zh
             }
         });
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-
         mRecyclerview.setAdapter(mAdapter);
         getZhihu();
     }

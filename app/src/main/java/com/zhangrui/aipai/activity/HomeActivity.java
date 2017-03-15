@@ -103,7 +103,9 @@ public class HomeActivity extends BaseActivity
         } else if (id == R.id.douban) {
 
         } else if (id == R.id.nav_share) {
+
             showShare("汇聚", "我发现了一款不错的App,邀请你们下载", "", "");
+
         } else if (id == R.id.nav_send) {
 
         }

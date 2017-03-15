@@ -3,9 +3,9 @@ package com.zhangrui.aipai.activity;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -14,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,10 +28,12 @@ import com.zhangrui.aipai.viewmodel.Story;
 
 import butterknife.Bind;
 
+import static com.zhangrui.aipai.R.id.toolbar;
+
 public class StoryActivity extends BaseMvpActivity<StoryPresenter> implements StoryView {
     ActivityStoryBinding binding;
     String id;
-    @Bind(R.id.toolbar)
+    @Bind(toolbar)
     Toolbar mToolbar;
     @Bind(R.id.image)
     ImageView mImage;
@@ -38,6 +41,11 @@ public class StoryActivity extends BaseMvpActivity<StoryPresenter> implements St
     TextView mTitle;
     @Bind(R.id.body)
     WebView mWebview;
+    @Bind(R.id.app_bar_layout)
+    AppBarLayout mAppBarLayout;
+    @Bind(R.id.relative)
+    RelativeLayout mRelativeLayout;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +60,6 @@ public class StoryActivity extends BaseMvpActivity<StoryPresenter> implements St
     @Override
     public void initView() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_pink_500_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +68,24 @@ public class StoryActivity extends BaseMvpActivity<StoryPresenter> implements St
             }
         });
         setWebView();
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    mRelativeLayout.setVisibility(View.INVISIBLE);
+                } else {
+                    mRelativeLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override
     public void getStory(Story story) {
         binding.setStory(story);
         if (TextUtils.isEmpty(story.getShareUrl())) {
-            mWebview.loadDataWithBaseURL("file:///android_asset/", story.getBody(), "text/html", "UTF-8", "http//:daily.zhihu.com/");
+             mWebview.loadDataWithBaseURL("http://daily.zhihu.com/", story.getBody(), "text/html", "UTF-8", "http://daily.zhihu.com/");
+           // mWebview.loadData(story.getBody(), "text/html", "gbk");
         } else {
             mWebview.loadUrl(story.getShareUrl());
         }
@@ -123,24 +141,24 @@ public class StoryActivity extends BaseMvpActivity<StoryPresenter> implements St
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return false;
+                // view.loadUrl(url);
+                return super.shouldOverrideUrlLoading(view, url);
             }
         });
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mWebview.canGoBack()) {
-                mWebview.goBack();
-                return true;
-            } else {
-                finish();
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            if (mWebview.canGoBack()) {
+//                mWebview.goBack();
+//                return true;
+//            } else {
+//                finish();
+//            }
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     @Override
     protected void onPause() {
@@ -160,7 +178,7 @@ public class StoryActivity extends BaseMvpActivity<StoryPresenter> implements St
 
     @Override
     public void onDestroy() {
-        if (mWebview != null){
+        if (mWebview != null) {
             ((ViewGroup) mWebview.getParent()).removeView(mWebview);
             mWebview.destroy();
             mWebview = null;

@@ -23,6 +23,7 @@ public class VideoTabAdapter extends BaseQuickAdapter<Video> {
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, Video video) {
+
         baseViewHolder.setText(R.id.name,video.getScreen_name());
         baseViewHolder.setText(R.id.play_count,video.getPlays_count()+"");
         baseViewHolder.setText(R.id.like_count,video.getLikes_count()+"");
@@ -30,5 +31,6 @@ public class VideoTabAdapter extends BaseQuickAdapter<Video> {
         baseViewHolder.setText(R.id.caption,video.getCaption()+"");
         Glide.with(mContext).load(video.getAvatar()).into((ImageView) baseViewHolder.getView(R.id.head));
         Glide.with(mContext).load(video.getCover_pic()).into((ImageView) baseViewHolder.getView(R.id.cover));
+
     }
 }
