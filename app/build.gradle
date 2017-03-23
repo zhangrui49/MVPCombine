@@ -1,11 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.antfortune.freeline'
-
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
-        applicationId "com.zhangrui.aipai"
+        applicationId "com.zhangrui.huiju"
         minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
