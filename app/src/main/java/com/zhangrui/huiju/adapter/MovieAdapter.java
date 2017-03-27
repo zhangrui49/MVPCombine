@@ -24,7 +24,7 @@ public class MovieAdapter extends BaseQuickAdapter<MovieDetail> {
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, MovieDetail movieDetail) {
-        Glide.with(mContext).load(movieDetail.getImages().getMedium()).into((ImageView) baseViewHolder.getView(R.id.image));
+        Glide.with(mContext).load(movieDetail.getImages().getLarge()).into((ImageView) baseViewHolder.getView(R.id.image));
         baseViewHolder.setText(R.id.title, movieDetail.getTitle());
         if (movieDetail.getCountries() != null) {
             StringBuilder country = new StringBuilder();

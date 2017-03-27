@@ -12,13 +12,14 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.zhangrui.huiju.R;
-import com.zhangrui.huiju.activity.WebActivity;
+import com.zhangrui.huiju.activity.MovieDetailActivity;
 import com.zhangrui.huiju.adapter.MovieAdapter;
 import com.zhangrui.huiju.base.BaseMvpFragment;
 import com.zhangrui.huiju.mvp.model.Movie;
 import com.zhangrui.huiju.mvp.model.MovieDetail;
 import com.zhangrui.huiju.mvp.presenter.MoviePresenter;
 import com.zhangrui.huiju.mvp.view.MovieView;
+import com.zhangrui.huiju.widget.HidingScrollListener;
 import com.zhangrui.huiju.widget.RecyclerViewDivider;
 
 import java.util.ArrayList;
@@ -85,7 +86,10 @@ public class MovieTabFragment extends BaseMvpFragment<MoviePresenter> implements
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                Intent intent = new Intent(getActivity(), WebActivity.class);
+//                Intent intent = new Intent(getActivity(), WebActivity.class);
+//                intent.putExtra("url", mMovieDataList.get(position).getAlt());
+//                getActivity().startActivity(intent);
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
                 intent.putExtra("id", mMovieDataList.get(position).getId());
                 getActivity().startActivity(intent);
 
@@ -96,6 +100,16 @@ public class MovieTabFragment extends BaseMvpFragment<MoviePresenter> implements
         mRecyclerview.addItemDecoration(new RecyclerViewDivider(
                 getActivity(), LinearLayoutManager.VERTICAL, 10, Color.YELLOW));
         getMovies();
+        mRecyclerview.addOnScrollListener(new HidingScrollListener() {
+            @Override
+            public void onHide() {
+
+            }
+            @Override
+            public void onShow() {
+
+            }
+        });
     }
 
     @Override
@@ -104,8 +118,8 @@ public class MovieTabFragment extends BaseMvpFragment<MoviePresenter> implements
     }
 
     @Override
-    public void getMovie(Movie gank) {
-        mAdapter.addData(gank.getSubjects());
+    public void getMovie(Movie movie) {
+        mAdapter.addData(movie.getSubjects());
     }
 
     private void getMovies() {
@@ -114,4 +128,16 @@ public class MovieTabFragment extends BaseMvpFragment<MoviePresenter> implements
         map.put("start", page);
         mPresenter.getMovies(type, map);
     }
+
+//    private void hideViews() {
+//        mToolbar.animate().translationY(-mToolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+//        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mFabButton.getLayoutParams();
+//        int fabBottomMargin = lp.bottomMargin;
+//        mFabButton.animate().translationY(mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+//    }
+//
+//    private void showViews() {
+//        mToolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+//        mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+//    }
 }

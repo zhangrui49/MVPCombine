@@ -70,12 +70,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     public void showProgress() {
         progressDialog = new ProgressDialog(mActivity);
-        progressDialog.setMessage("请稍候...");
+        progressDialog.setMessage("加载中...");
         progressDialog.show();
     }
 
     @Override
-    public void dissmissProgress() {
+    public void dismissProgress() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -83,8 +83,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void showError(CharSequence msg) {
-        dissmissProgress();
-        Snackbar.make(getWindow().getDecorView().getRootView(), msg, Snackbar.LENGTH_SHORT).show();
+        dismissProgress();
+        Snackbar.make(getWindow().getDecorView().getRootView(), msg, Snackbar.LENGTH_LONG).show();
     }
 
     public void showShare(String title, String content, String imgUrl, String url) {

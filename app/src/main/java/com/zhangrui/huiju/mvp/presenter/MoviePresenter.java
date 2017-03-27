@@ -34,7 +34,7 @@ public class MoviePresenter extends BasePresenter<MovieView> {
 
             @Override
             public void onFinish() {
-                mView.dissmissProgress();
+                mView.dismissProgress();
             }
 
             @Override

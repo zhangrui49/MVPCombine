@@ -21,7 +21,7 @@ public class MovieDetailPresenter extends BasePresenter<MovieDetailView> {
         mDouBanApi = NetClient.getInstance().getDoubanRetrofit().create(Api.DouBanApi.class);
     }
 
-    public void getMovies(String id) {
+    public void getMovie(String id) {
 
         mView.showProgress();
         addSubscription(mDouBanApi.getMovieDetail(id), new ApiCallBack<MovieDetail>() {
@@ -32,7 +32,7 @@ public class MovieDetailPresenter extends BasePresenter<MovieDetailView> {
 
             @Override
             public void onFinish() {
-                mView.dissmissProgress();
+                mView.dismissProgress();
             }
 
             @Override

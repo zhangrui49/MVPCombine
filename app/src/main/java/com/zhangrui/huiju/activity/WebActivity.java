@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.webkit.ClientCertRequest;
 import android.webkit.ConsoleMessage;
 import android.webkit.HttpAuthHandler;
+import android.webkit.PermissionRequest;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -22,6 +23,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.zhangrui.huiju.R;
 import com.zhangrui.huiju.base.BaseActivity;
@@ -36,6 +38,8 @@ public class WebActivity extends BaseActivity {
     String imgUrl;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.progress)
+    ProgressBar mProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,13 @@ public class WebActivity extends BaseActivity {
         imgUrl = getIntent().getStringExtra("imgUrl");
         mWebview.loadUrl(url);
         mWebview.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onPermissionRequest(PermissionRequest request) {
+
+                super.onPermissionRequest(request);
+            }
+
+
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
                 return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
@@ -100,18 +111,37 @@ public class WebActivity extends BaseActivity {
             public View getVideoLoadingProgressView() {
                 return super.getVideoLoadingProgressView();
             }
-        });
-        mWebview.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return super.shouldOverrideUrlLoading(view, url);
-            }
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                // view.loadUrl(url);
-                return true;
+            public void onProgressChanged(WebView view, int newProgress) {
+                mProgressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    mProgressBar.setVisibility(View.GONE);
+                } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+                super.onProgressChanged(view, newProgress);
             }
+        });
+        mWebview.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                if (url.startsWith("http")) {
+                    view.loadUrl(url);
+                } else {
+                    return super.shouldOverrideUrlLoading(view, url);
+                }
+
+                return false;
+            }
+
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//                // view.loadUrl(url);
+//                return true;
+//            }
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
@@ -157,7 +187,8 @@ public class WebActivity extends BaseActivity {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                super.onReceivedSslError(view, handler, error);
+                handler.proceed();
+                //  super.onReceivedSslError(view, handler, error);
             }
 
             @Override

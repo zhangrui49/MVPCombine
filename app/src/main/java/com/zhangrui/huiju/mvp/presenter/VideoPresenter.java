@@ -35,7 +35,7 @@ public class VideoPresenter extends BasePresenter<VideoView> {
 
             @Override
             public void onFinish() {
-                mView.dissmissProgress();
+                mView.dismissProgress();
             }
 
             @Override

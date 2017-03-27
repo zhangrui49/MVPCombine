@@ -19,7 +19,12 @@
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="exitUntilCollapsed"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
-
+        <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:max="100"
+                android:layout_height="2dp"/>
     </android.support.design.widget.AppBarLayout>
 
     <WebView

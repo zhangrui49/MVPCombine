@@ -31,7 +31,7 @@ public class StoryPresenter extends BasePresenter<StoryView> {
 
             @Override
             public void onFinish() {
-                mView.dissmissProgress();
+                mView.dismissProgress();
             }
 
             @Override

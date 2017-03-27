@@ -31,7 +31,7 @@ public class ZhihuPresenter extends BasePresenter<ZhihuView> {
 
             @Override
             public void onFinish() {
-                mView.dissmissProgress();
+                mView.dismissProgress();
             }
 
             @Override
@@ -50,7 +50,7 @@ public class ZhihuPresenter extends BasePresenter<ZhihuView> {
 
             @Override
             public void onFinish() {
-                mView.dissmissProgress();
+                mView.dismissProgress();
             }
 
             @Override

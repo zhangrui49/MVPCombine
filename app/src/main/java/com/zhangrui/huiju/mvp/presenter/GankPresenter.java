@@ -31,7 +31,7 @@ public class GankPresenter extends BasePresenter<GankView> {
 
             @Override
             public void onFinish() {
-                mView.dissmissProgress();
+                mView.dismissProgress();
             }
 
             @Override

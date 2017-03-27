@@ -62,7 +62,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     @Override
-    public void dissmissProgress() {
+    public void dismissProgress() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -70,7 +70,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void showError(CharSequence msg) {
-        dissmissProgress();
+        dismissProgress();
         Snackbar.make(mRootView, msg, Snackbar.LENGTH_SHORT).show();
     }
 

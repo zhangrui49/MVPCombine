@@ -9,7 +9,7 @@ public interface BaseView {
 
     void showProgress();
 
-    void dissmissProgress();
+    void dismissProgress();
 
     void showError(CharSequence msg);
 

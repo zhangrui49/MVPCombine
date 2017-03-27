@@ -3,6 +3,7 @@ package com.zhangrui.huiju.net;
 import com.zhangrui.huiju.mvp.model.Gank;
 import com.zhangrui.huiju.mvp.model.GankDayData;
 import com.zhangrui.huiju.mvp.model.Movie;
+import com.zhangrui.huiju.mvp.model.MovieDetail;
 import com.zhangrui.huiju.mvp.model.Video;
 import com.zhangrui.huiju.viewmodel.Story;
 import com.zhangrui.huiju.mvp.model.Zhihu;
@@ -70,7 +71,7 @@ public class Api {
         Observable<Movie> getMovies(@Path("type") String type,@QueryMap HashMap<String, Object> map);
 
         @GET("subject/{id}")
-        Observable<Movie> getMovieDetail(@Path("id") String id);
+        Observable<MovieDetail> getMovieDetail(@Path("id") String id);
 
     }
 
